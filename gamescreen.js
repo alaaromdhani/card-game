@@ -164,7 +164,7 @@ class gameScene extends Phaser.Scene{
                     this.playingLevel=level
                     this.playingStage = i+1
                     this.destroyMenu()
-                    document.querySelector('body').requestFullscreen()
+                    document.querySelector('body').requestFullscreen().then(()=>{ console.log('ala')}).catch(e=>{alert('full screen not supported') })
                     this.setGame()
                 })
                 
