@@ -164,6 +164,7 @@ class gameScene extends Phaser.Scene{
                     this.playingLevel=level
                     this.playingStage = i+1
                     this.destroyMenu()
+                    document.querySelector('body').requestFullscreen()
                     this.setGame()
                 })
                 
@@ -548,7 +549,7 @@ class gameScene extends Phaser.Scene{
     }
     
     loseTextEffect(){
-      //  this.soundLost.play()
+      
         this.rendredMessage =  this.add.text(600, 525, 'ربما في مرة أخرى', {
                    
             fontSize: '100px',
@@ -597,9 +598,7 @@ class gameScene extends Phaser.Scene{
 
        
     }
-    destroyResultScreen(){
-
-    }
+    
     destroyGameAnimation(){
             this.gameConf.choosenCardsSprites.forEach(s=>{
                     
@@ -820,7 +819,7 @@ class gameScene extends Phaser.Scene{
         
     }
     create(){
-            
+       // document.querySelector('body').requestFullscreen()
             this.initializeBackground()
             this.initializeSound()
             
