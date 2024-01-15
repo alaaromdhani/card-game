@@ -103,31 +103,31 @@ class gameScene extends Phaser.Scene{
         
       const graphics = this.add.graphics()
       graphics.fillGradientStyle(0x05050E,0x05050E,0x331919,0x331919,1)
-      let rectangle = graphics.fillRect(0,0,1152,1152)
+      let rectangle = graphics.fillRect(0,0,1500,1152)
       graphics.fillStyle(0xffffff,0.4)
-      let menuRectangle = graphics.fillRoundedRect(118,18,909,124)  
+      let menuRectangle = graphics.fillRoundedRect(118,18,1264,124)  
       graphics.fillStyle(0x3F2330,1)
         
-      let menuRectangle2 = graphics.fillRoundedRect(120,20,905,120)  
+      let menuRectangle2 = graphics.fillRoundedRect(120,20,1260,120)  
       graphics.fillStyle(0xffffff,0.4)
-      let menuRectangle3 = graphics.fillRoundedRect(118,158,909,905)  
+      let menuRectangle3 = graphics.fillRoundedRect(118,158,1264,905)  
       graphics.fillStyle(0x3F2330,1)
        
-      let menuRectangle4 = graphics.fillRoundedRect(120,160,905,900)  
+      let menuRectangle4 = graphics.fillRoundedRect(120,160,1260,900)  
       this.menuSprite = this.add.sprite(178,75,'menu','leave')
-      this.nameText = this.add.text(900, 50, this.currentUser.name , {
+      this.nameText = this.add.text(1251, 50, this.currentUser.name , {
         fontSize: '40px',
         fontFamily: 'Asmaa',
         color: '#ffffff',
       }).setOrigin(0.5) 
-      this.diamondSprite = this.add.sprite(950,110,'diamond').setScale(0.7)
-      this.totalDiamond = this.add.text(870, 110, this.currentUser.diamonds , {
+      this.diamondSprite = this.add.sprite(1305,110,'diamond').setScale(0.7)
+      this.totalDiamond = this.add.text(1225, 110, this.currentUser.diamonds , {
         fontSize: '40px',
         fontFamily: 'Asmaa',
         color: '#ffffff',
       }).setOrigin(0.5) 
       
-      this.levelText = this.add.text(600, 200, this.menu.currentLevel+' المستوى' , {
+      this.levelText = this.add.text(730, 200, this.menu.currentLevel+' المستوى' , {
         fontSize: '50px',
         fontFamily: 'Asmaa',
         color: '#ffffff',
@@ -152,8 +152,8 @@ class gameScene extends Phaser.Scene{
             } 
            
             if(this.levels['level'+level].stages.unlocked>=i+1){
-                let box = this.createLevelBox(x+(offsetX*200),(200*offsetY)+y,false)
-                let text = this.add.text(x+(offsetX*200)-10, ((200*offsetY)+y)-35, i+1 , {
+                let box = this.createLevelBox(x+(offsetX*250),(200*offsetY)+y,false)
+                let text = this.add.text(x+(offsetX*250)-10, ((200*offsetY)+y)-35, i+1 , {
                    
                     fontSize: '60px',
                     fontFamily: 'Asmaa',
@@ -170,7 +170,7 @@ class gameScene extends Phaser.Scene{
                 
             }
             else{
-                this.menu.stageBoxes['level'+level].push({box:this.createLevelBox(x+(offsetX*200),(200*offsetY)+y,true)})
+                this.menu.stageBoxes['level'+level].push({box:this.createLevelBox(x+(offsetX*250),(200*offsetY)+y,true)})
             }
             
 
@@ -200,7 +200,7 @@ class gameScene extends Phaser.Scene{
         const graphics  = this.add.graphics()
         graphics.fillStyle(0x171515,1) ;
         
-        const rect = graphics.fillRoundedRect(118,158,909,905).setAlpha(0)
+        const rect = graphics.fillRoundedRect(118,158,1264,905).setAlpha(0)
            
         let tween = this.tweens.add({
            targets: rect,
@@ -291,7 +291,7 @@ class gameScene extends Phaser.Scene{
     }
     setGamePart2(){
         this.menuSprite = this.add.sprite(170,230,'menu','menu').setInteractive()
-        this.restartSprite = this.add.sprite(970,230,'menu','restart').setInteractive()
+        this.restartSprite = this.add.sprite(1324,230,'menu','restart').setInteractive()
         
       
         this.menuSprite.on('pointerdown',()=>{
@@ -324,7 +324,7 @@ class gameScene extends Phaser.Scene{
             if(index%4==0 && index!=0){
                 offsetY++
             }
-            box.sprite = this.add.sprite(350+((index%4)*150),350+(offsetY*180),'flipped').setScale(0)
+            box.sprite = this.add.sprite(400+((index%4)*220),350+(offsetY*200),'flipped').setScale(0)
             
             box.sprite.setInteractive()
             box.sprite.on('pointerdown',()=>{
@@ -362,7 +362,7 @@ class gameScene extends Phaser.Scene{
     }
     winTextEffect(){
 
-        this.rendredMessage =  this.add.text(600, 525, 'فوز رائع', {
+        this.rendredMessage =  this.add.text(730, 525, 'فوز رائع', {
                    
             fontSize: '100px',
             fontFamily: 'Asmaa',
@@ -475,7 +475,7 @@ class gameScene extends Phaser.Scene{
 
         }
         
-            this.WinEmitter = this.add.particles(600, 525, 'flares', {
+            this.WinEmitter = this.add.particles(730, 525, 'flares', {
                 frame: [ 'red', 'yellow', 'green' ],
                 lifespan: 1000,
                 speed: { min: 150, max: 250 },
@@ -550,7 +550,7 @@ class gameScene extends Phaser.Scene{
     
     loseTextEffect(){
       
-        this.rendredMessage =  this.add.text(600, 525, 'ربما في مرة أخرى', {
+        this.rendredMessage =  this.add.text(730, 525, 'ربما في مرة أخرى', {
                    
             fontSize: '100px',
             fontFamily: 'Asmaa',
@@ -659,10 +659,10 @@ class gameScene extends Phaser.Scene{
     createNextLevelButton(){
         const graphics = this.add.graphics()
         graphics.fillStyle(0xffffff)
-       let bigRect =  graphics.fillRoundedRect(470,600,250,80,40)
+       let bigRect =  graphics.fillRoundedRect(600,600,250,80,40)
         graphics.fillStyle(0x9A2A2A)
-        let smallRect = graphics.fillRoundedRect(472,602,246,76,40)
-        let next = this.add.text(600, 625, 'المستوى القادم', {
+        let smallRect = graphics.fillRoundedRect(602,602,246,76,40)
+        let next = this.add.text(730, 630, 'المستوى القادم', {
                    
             fontSize: '40px',
             fontFamily: 'Asmaa',
@@ -733,9 +733,9 @@ class gameScene extends Phaser.Scene{
         this.movingMenuCircle.setX(this.movingMenuCircle.x+this.offsetMenuCircle)
         Object.keys(this.menu.stageBoxes).forEach(level=>{
             this.menu.stageBoxes[level].forEach(sprite=>{
-                 sprite.box.x-=1000
+                 sprite.box.x-=1500
                  if(sprite.text){
-                    sprite.text.x-=1000
+                    sprite.text.x-=1500
                  }
             }) 
         })
@@ -748,9 +748,9 @@ class gameScene extends Phaser.Scene{
     
         Object.keys(this.menu.stageBoxes).forEach(level=>{
             this.menu.stageBoxes[level].forEach(sprite=>{
-                sprite.box.x+=1000
+                sprite.box.x+=1500
                 if(sprite.text){
-                    sprite.text.x+=1000
+                    sprite.text.x+=1500
                  }
              })
 
@@ -760,14 +760,14 @@ class gameScene extends Phaser.Scene{
     startMenu(){
         for(let i=1;i<=this.menu.numberOfLevels;i++){
             if(i<this.menu.currentLevel){
-                this.setLevelBoxes(400 - ((this.menu.currentLevel -i)*1000),350,i)
+                this.setLevelBoxes(500 - ((this.menu.currentLevel -i)*1500),350,i)
             }
             else{
-                this.setLevelBoxes(400 + ((i -this.menu.currentLevel)*1000),350,i)
+                this.setLevelBoxes(500 + ((i -this.menu.currentLevel)*1500),350,i)
             }
         } 
         if(this.beforeButton===undefined){
-            this.beforeButton =  this.add.sprite(260,900,'menu','after').setInteractive().setScale(1.2)  
+            this.beforeButton =  this.add.sprite(360,900,'menu','after').setInteractive().setScale(1.2)  
             this.beforeButton.on('pointerdown',()=>{
             
                 if(this.menu.currentLevel>1){
@@ -781,7 +781,7 @@ class gameScene extends Phaser.Scene{
             this.beforeButton.visible=true    
         }
         if(this.afterButton===undefined){
-            this.afterButton =  this.add.sprite(930,900,'menu','after').setInteractive().setScale(1.2)
+            this.afterButton =  this.add.sprite(1130,900,'menu','after').setInteractive().setScale(1.2)
             this.afterButton.flipX=true  
             this.afterButton.on('pointerdown',()=>{
             
@@ -802,7 +802,7 @@ class gameScene extends Phaser.Scene{
       
         
         if(!this.levelText){
-           this.levelText = this.add.text(600, 200, this.menu.currentLevel+' '+ 'المستوى' , {
+           this.levelText = this.add.text(720, 200, this.menu.currentLevel+' '+ 'المستوى' , {
                fontSize: '50px',
                fontFamily: 'Asmaa',
                color: '#ffffff',
@@ -880,7 +880,7 @@ class gameScene extends Phaser.Scene{
 }
 const config = {
     type: Phaser.AUTO,
-    width: 1152,
+    width: 1500,
     height: 1052,
     scale: {
         mode: Phaser.Scale.FIT ,
