@@ -172,7 +172,95 @@ class gameScene extends Phaser.Scene{
     create(){
             
             this.initializeBackground()
+            let  canvas = game.canvas
             
+            if(window.innerWidth>=window.innerHeight){
+                this.resizeFunction()
+                if(window.innerWidth>=1052 ){
+                    if(screen.width<=1000){
+                        canvas.style.width= screen.width+"px"   
+                        canvas.style.height=screen.height+"px"
+                        canvas.style.marginLeft=0+"px"
+                        canvas.style.marginRight=0+"px"
+                
+                    }
+                    else{
+                        canvas.style.width=1052+"px"   
+                        canvas.style.height=1052+"px"
+                       
+                        canvas.style.marginLeft=((window.innerWidth)-1052)/2+"px"
+                        canvas.style.marginRight=((window.innerWidth)-1052)/2+"px"
+                
+                    }
+                }
+                else{
+                    if(screen.width<=1000){
+                        canvas.style.width= screen.width+"px"   
+                        canvas.style.height=screen.height+"px"
+                    }
+                    else{
+                        canvas.style.width= window.innerWidth+"px"   
+                        canvas.style.height=window.innerHeight+"px"
+                       
+                    }
+                    canvas.style.marginLeft=0+"px"
+                    canvas.style.marginRight=0+"px"
+                 }
+            }
+            else{
+
+                if(screen.width<=1000){
+                    canvas.style.width= screen.width+"px"   
+                    canvas.style.height=screen.height+"px"
+                }
+                else{
+                    canvas.style.width=window.innerWidth+"px"   
+                    canvas.style.height=window.innerHeight+"px"
+                  
+                }
+                canvas.style.marginLeft=0+"px"
+                canvas.style.marginRight=0+"px"
+            }
+            window.addEventListener('resize',()=>{
+                
+                this.resizeFunction()
+                
+                var canvas = game.canvas
+                if(window.innerWidth>=1052 ){
+                    if(screen.width<=1000){
+                        canvas.style.width= screen.width+"px"   
+                        canvas.style.height=screen.height+"px"
+                        canvas.style.marginLeft=0+"px"
+                        canvas.style.marginRight=0+"px"
+                
+                    }
+                    else{
+                        canvas.style.width=1052+"px"   
+                        canvas.style.height=1052+"px"
+                       
+                        canvas.style.marginLeft=((window.innerWidth)-1052)/2+"px"
+                        canvas.style.marginRight=((window.innerWidth)-1052)/2+"px"
+                
+                    }
+                }
+                else{
+                    if(screen.width<=1000){
+                        canvas.style.width= screen.width+"px"   
+                        canvas.style.height=screen.height+"px"
+                    }
+                    else{
+                        canvas.style.width=window.innerWidth+"px"   
+                        canvas.style.height=window.innerHeight+"px"
+                      
+                    }
+                    canvas.style.marginLeft=0+"px"
+                    canvas.style.marginRight=0+"px"
+            
+                }
+                
+            })
+
+
             
     }
 
@@ -181,17 +269,13 @@ class gameScene extends Phaser.Scene{
 const config = {
     type: Phaser.WEBGL,
     width: 1052,
-     height: 1052,
+    height: 1052,
+    
      
-     scale: {
-            mode: Phaser.Scale.FIT ,
-            autoCenter: Phaser.Scale.CENTER_BOTH
-        },
-
-      scene: gameScene,
-   
+    backgroundColor: '#171515',
+    parent: 'phaser-example',
+    scene: gameScene
 };
-
 
 const game = new Phaser.Game(config);
 

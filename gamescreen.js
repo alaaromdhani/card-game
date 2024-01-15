@@ -823,55 +823,6 @@ class gameScene extends Phaser.Scene{
             
             this.initializeBackground()
             this.initializeSound()
-            let  canvas = game.canvas
-            
-            if(window.innerWidth>=window.innerHeight){
-                if(window.innerWidth>=1052 ){
-                    if(screen.width<=1000){
-                        canvas.style.width= screen.width+"px"   
-                        canvas.style.height=screen.height+"px"
-                        canvas.style.marginLeft=0+"px"
-                        canvas.style.marginRight=0+"px"
-                
-                    }
-                    else{
-                        canvas.style.width=1052+"px"   
-                        canvas.style.height=window.innerHeight+"px"
-                       
-                        canvas.style.marginLeft=((window.innerWidth)-1052)/2+"px"
-                        canvas.style.marginRight=((window.innerWidth)-1052)/2+"px"
-                
-                    }
-                }
-                else{
-                    if(screen.width<=1000){
-                        canvas.style.width= screen.width+"px"   
-                        canvas.style.height=screen.height+"px"
-                    }
-                    else{
-                        canvas.style.width= window.innerWidth+"px"   
-                        canvas.style.height=window.innerHeight+"px"
-                       
-                    }
-                    canvas.style.marginLeft=0+"px"
-                    canvas.style.marginRight=0+"px"
-                 }
-            }
-            else{
-
-                if(screen.width<=1000){
-                    canvas.style.width= screen.width+"px"   
-                    canvas.style.height=screen.height+"px"
-                }
-                else{
-                    canvas.style.width=window.innerWidth+"px"   
-                    canvas.style.height=window.innerHeight+"px"
-                  
-                }
-                canvas.style.marginLeft=0+"px"
-                canvas.style.marginRight=0+"px"
-            }
-
             
             this.startMenu()
             //this.setGame()
@@ -932,7 +883,10 @@ const config = {
     type: Phaser.AUTO,
     width: 1152,
     height: 1052,
-    
+    scale: {
+        mode: Phaser.Scale.FIT ,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
      
     backgroundColor: '#171515',
     parent: 'phaser-example',
@@ -941,39 +895,3 @@ const config = {
 
 const game = new Phaser.Game(config);
 
-window.addEventListener('resize',()=>{
-   
-    var canvas = game.canvas
-    if(window.innerWidth>=1052 ){
-        if(screen.width<=1000){
-            canvas.style.width= screen.width+"px"   
-            canvas.style.height=screen.height+"px"
-            canvas.style.marginLeft=0+"px"
-            canvas.style.marginRight=0+"px"
-    
-        }
-        else{
-            canvas.style.width=1052+"px"   
-            canvas.style.height=window.innerHeight+"px"
-                      
-            canvas.style.marginLeft=((window.innerWidth)-1052)/2+"px"
-            canvas.style.marginRight=((window.innerWidth)-1052)/2+"px"
-    
-        }
-    }
-    else{
-        if(screen.width<=1000){
-            canvas.style.width= screen.width+"px"   
-            canvas.style.height=screen.height+"px"
-        }
-        else{
-            canvas.style.width=window.innerWidth+"px"   
-            canvas.style.height=window.innerHeight+"px"
-          
-        }
-        canvas.style.marginLeft=0+"px"
-        canvas.style.marginRight=0+"px"
-
-    }
-    
-})
