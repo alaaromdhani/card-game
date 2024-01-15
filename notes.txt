@@ -1,0 +1,5 @@
+//back to main menu 
+//restart level stage
+//winEffect
+//looseEffect
+//diamond Effect

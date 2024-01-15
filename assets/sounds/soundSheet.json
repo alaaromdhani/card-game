@@ -1,0 +1,15 @@
+{
+    "resources": [
+     
+      "./assets/sounds/btnclick.webm"
+    ],
+    "spritemap": {
+      "btnclick": {
+        "start": 0,
+        "end": 2,
+        "loop": false
+      }
+      
+      
+    }
+  }

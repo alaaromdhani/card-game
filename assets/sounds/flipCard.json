@@ -1,0 +1,15 @@
+{
+    "resources": [
+     
+      "./assets/sounds/girar2.webm"
+    ],
+    "spritemap": {
+      "flipCard": {
+        "start": 0,
+        "end": 2,
+        "loop": false
+      }
+      
+      
+    }
+  }

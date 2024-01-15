@@ -1,0 +1,15 @@
+{
+    "resources": [
+     
+      "./assets/sounds/wrong.webm"
+    ],
+    "spritemap": {
+      "wrong": {
+        "start": 0,
+        "end": 2,
+        "loop": false
+      }
+      
+      
+    }
+  }

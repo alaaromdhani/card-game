@@ -1,0 +1,15 @@
+{
+    "resources": [
+     
+      "./assets/sounds/correcta.webm"
+    ],
+    "spritemap": {
+      "correct": {
+        "start": 0,
+        "end": 2,
+        "loop": false
+      }
+      
+      
+    }
+  }
