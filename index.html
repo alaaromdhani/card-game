@@ -22,10 +22,15 @@
         box-shadow: 1px 1px 15px 10px rgba(234, 234, 234, 0.2);
     }
 </style>
-<h6 style="font-family: Asmaa;color: #0081C9;position: absolute;" >مدار</h6>
+<h3 id="title" style="font-family: Asmaa;color: #0081C9;position: absolute;" >مدار</h3>
 <script src="//cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.js"></script>
 <script src="//cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.min.js"></script>
 <script src="gamescreen.js"></script>
+<script>
+    document.querySelector('#title').addEventListener('click',(e)=>{
+        document.querySelector('body').requestFullscreen().then(()=>{console.log('good')}).catch(e=>{ alert('full screnn not supported because of',e.message)})
+    })
+</script>
 <body>
     
 </body>
