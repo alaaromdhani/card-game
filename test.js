@@ -56,52 +56,40 @@ class gameScene extends Phaser.Scene{
     }    
     }
     preload(){
-        this.load.atlas('menu', './assets/othertheme/Asset 61.png', 'assets/menu.json')
-        this.load.image('diamond', './assets/othertheme/diamond.png')
-     
-        //  this.load.atlas('images', './assets/Asset 5.png', 'assets/menu.json')
+        this.load.atlas('level1', './gameAssets/othertheme2/lvl 1 (2).png', './gameAssets/othertheme2/images.json')
+       
         
     }
     initializeBackground(){
-      const graphics = this.add.graphics()
-      graphics.fillGradientStyle(0x05050E,0x05050E,0x331919,0x331919,1)
-      let rectangle = graphics.fillRect(0,0,1052,1052)
-      graphics.fillStyle(0xffffff,0.4)
-      let menuRectangle = graphics.fillRoundedRect(118,18,909,124)  
-      graphics.fillStyle(0x3F2330,1)
-     
-      let menuRectangle2 = graphics.fillRoundedRect(120,20,905,120)  
-      graphics.fillStyle(0xffffff,0.4)
-      let menuRectangle3 = graphics.fillRoundedRect(118,158,909,905)  
-      graphics.fillStyle(0x3F2330,1)
-       
-      let menuRectangle4 = graphics.fillRoundedRect(120,160,905,900)  
-      this.menuSprite = this.add.sprite(178,75,'menu','leave')
-      this.nameText = this.add.text(900, 50, 'علاء الرمضاني' , {
-        fontSize: '40px',
-        fontFamily: 'Asmaa',
-        color: '#ffffff',
-      }).setOrigin(0.5) 
-      this.diamondSprite = this.add.sprite(950,110,'diamond').setScale(0.7)
-      this.totalDiamond = this.add.text(870, 110, '9999' , {
-        fontSize: '40px',
-        fontFamily: 'Asmaa',
-        color: '#ffffff',
-      }).setOrigin(0.5) 
-      
-   
-    
-      /*   this.restartSprite = this.add.sprite(710,180,'menu','restart')
-        this.leaveSprite = this.add.sprite(100,180,'menu','menu')*/
-        this.setLevelBoxes(400,350,1)
-        // sprite.postFX.addShadow(0, 5, 0.006, 2, 0xf8f7f7, 10, .8);
-        //sprite.postFX.addShadow(0, -5, 0.006, 2, 0xf8f7f7, 10, .8);
-         
-      // sprite.preFX.addShadow(5, 5, 0.01, 12, 0xf8f7f7, 10,0.5) 
+        const graphics = this.add.graphics()
+        graphics.fillGradientStyle(0x05050E,0x05050E,0x331919,0x331919,1)
+        let rectangle = graphics.fillRect(0,0,1500,1052)
+        graphics.fillStyle(0xffffff,0.4)
+        let menuRectangle = graphics.fillRoundedRect(0,-20,1500,152)  
+        graphics.fillStyle(0x3F2330,1)
+          
+        let menuRectangle2 = graphics.fillRoundedRect(0,-20,1500,150)  
+        graphics.fillStyle(0xffffff,0.4)
+        let test = this.add.sprite(400,300,'level1','image8-level-1')
+        //this.diamondSprite = this.add.sprite(1460,80,'diamond').setScale(0.7)
+        /*this.totalDiamond = this.add.text(1225, 110, this.currentUser.diamonds , {
+          fontSize: '40px',
+          fontFamily: 'Asmaa',
+          color: '#ffffff',
+        }).setOrigin(0.5) */
         
-      // sprite.preFX.addShadow(5, -5, 0.01, 12, 0xffffff, 10,0.5)  
-      //sprite.praddShadow(0, -5, 0.01, 12, 0xffffff, 10,0.5)
-      
+        /*this.levelText = this.add.text(730, 200, this.menu.currentLevel+' المستوى' , {
+          fontSize: '50px',
+          fontFamily: 'Asmaa',
+          color: '#ffffff',
+        }).setOrigin(0.5) 
+        this.anims.create({
+          key: 'explode',
+          frames: 'boom',
+          frameRate: 40,
+          showOnStart: true,
+          hideOnComplete: true
+       }); */
     }
     resizeFunction(){
             
@@ -179,17 +167,17 @@ class gameScene extends Phaser.Scene{
 
 }
 const config = {
-    type: Phaser.WEBGL,
-    width: 1052,
-     height: 1052,
+    type: Phaser.AUTO,
+    width: 1500,
+    height: 1052,
+    scale: {
+        mode: Phaser.Scale.FIT ,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
      
-     scale: {
-            mode: Phaser.Scale.FIT ,
-            autoCenter: Phaser.Scale.CENTER_BOTH
-        },
-
-      scene: gameScene,
-   
+    backgroundColor: '#171515',
+    parent: 'phaser-example',
+    scene: gameScene
 };
 
 

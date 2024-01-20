@@ -67,9 +67,7 @@ class gameScene extends Phaser.Scene{
         this.load.atlas('menu', './assets/othertheme/Asset 61.png', 'assets/menu.json')
         this.load.image('diamond', './assets/othertheme/diamond.png')
         this.load.image('flipped', './assets/othertheme/flipped.png')
-        for(let i=1;i<=8;i++){
-            this.load.image(`image${i}`,`./assets/othertheme/image${i}.png`)
-        }
+        this.load.atlas('level1', './gameAssets/othertheme2/lvl 1 (2).png', './gameAssets/othertheme2/images.json')
         this.load.audio('backgroundMusic','./assets/sounds/background.webm')
         this.load.audioSprite('sfx', 'assets/sounds/soundSheet.json');  
         this.load.audio('correct','./assets/sounds/correcta.webm')
@@ -94,40 +92,36 @@ class gameScene extends Phaser.Scene{
         this.backgroundMusic = this.sound.add('backgroundMusic')
         this.soundDiamond = this.sound.add('diamondEffect')
        
-        this.backgroundMusic.loop=true        
+       /* this.backgroundMusic.loop=true        
         
-        this.backgroundMusic.play()
+        this.backgroundMusic.play()*/
         this.btnClickMusic=this.sound.addAudioSprite('sfx')
     }
     initializeBackground(){
-        
+       
       const graphics = this.add.graphics()
       graphics.fillGradientStyle(0x05050E,0x05050E,0x331919,0x331919,1)
       let rectangle = graphics.fillRect(0,0,1500,1152)
       graphics.fillStyle(0xffffff,0.4)
-      let menuRectangle = graphics.fillRoundedRect(118,18,1264,124)  
+      let menuRectangle = graphics.fillRoundedRect(0,-20,1500,152)  
       graphics.fillStyle(0x3F2330,1)
         
-      let menuRectangle2 = graphics.fillRoundedRect(120,20,1260,120)  
-      graphics.fillStyle(0xffffff,0.4)
-      let menuRectangle3 = graphics.fillRoundedRect(118,158,1264,905)  
-      graphics.fillStyle(0x3F2330,1)
-       
-      let menuRectangle4 = graphics.fillRoundedRect(120,160,1260,900)  
-      this.menuSprite = this.add.sprite(178,75,'menu','leave')
-      this.nameText = this.add.text(1251, 50, this.currentUser.name , {
+      let menuRectangle2 = graphics.fillRoundedRect(0,-20,1500,150)  
+ 
+      
+      this.nameText = this.add.text(1390, 30, this.currentUser.name , {
         fontSize: '40px',
         fontFamily: 'Asmaa',
         color: '#ffffff',
       }).setOrigin(0.5) 
-      this.diamondSprite = this.add.sprite(1305,110,'diamond').setScale(0.7)
-      this.totalDiamond = this.add.text(1225, 110, this.currentUser.diamonds , {
+      this.diamondSprite = this.add.sprite(1450,80,'level1','diamond').setScale(0.7)
+      this.totalDiamond = this.add.text(1370, 80, this.currentUser.diamonds , {
         fontSize: '40px',
         fontFamily: 'Asmaa',
         color: '#ffffff',
       }).setOrigin(0.5) 
       
-      this.levelText = this.add.text(730, 200, this.menu.currentLevel+' المستوى' , {
+      this.levelText = this.add.text(730, 50, this.menu.currentLevel+' المستوى' , {
         fontSize: '50px',
         fontFamily: 'Asmaa',
         color: '#ffffff',
@@ -164,7 +158,6 @@ class gameScene extends Phaser.Scene{
                     this.playingLevel=level
                     this.playingStage = i+1
                     this.destroyMenu()
-                  //  document.querySelector('body').requestFullscreen().then(()=>{ console.log('ala')}).catch(e=>{alert('full screen not supported') })
                     this.setGame()
                 })
                 
@@ -261,8 +254,8 @@ class gameScene extends Phaser.Scene{
           if(!rand){
             rand++
           }
-          if(!arr.includes(`image${rand}`)){
-            arr.push(`image${rand}`)
+          if(!arr.includes(`image${rand}-level-${this.playingLevel}`)){
+            arr.push(`image${rand}-level-${this.playingLevel}`)
           }  
         }while(arr.length<num)
         return arr
@@ -284,14 +277,14 @@ class gameScene extends Phaser.Scene{
         let {shownCards,numberOfChoosenCards} = this.levels['level'+this.playingLevel]
         this.gameConf.choosenCards = this.getRundomNumbers(numberOfChoosenCards,(16/(shownCards/numberOfChoosenCards)))
     
-       this.levelText.setText(`نحن نبحث عن`)
+       this.levelText.setText(`ابحث عن`)
       this.gameConf.choosenCards.forEach((c,index)=>{
-            this.gameConf.choosenCardsSprites.push(this.add.sprite((this.levelText.x-150)-(index*100),this.levelText.y,c).setScale(0.5))
+            
+            this.gameConf.choosenCardsSprites.push(this.add.sprite((this.levelText.x-150)-(index*100),this.levelText.y,'level'+this.playingLevel,c).setScale(0.5))
        })       
     }
     setGamePart2(){
-        this.menuSprite = this.add.sprite(170,230,'menu','menu').setInteractive()
-        this.restartSprite = this.add.sprite(1324,230,'menu','restart').setInteractive()
+        this.menuSprite = this.add.sprite(60,60,'level1','menu').setInteractive()
         
       
         this.menuSprite.on('pointerdown',()=>{
@@ -299,18 +292,12 @@ class gameScene extends Phaser.Scene{
             this.backToMenu()
                
         })
-       this.restartSprite.on('pointerdown',()=>{
-
-             
-               this.stopGameScreen()
-               this.restartLevel()
-          
-       })
+       
         let {shownCards,numberOfChoosenCards} = this.levels['level'+this.playingLevel]
         let tweensNumber = 0
         for(let i=0;i<(16/(shownCards/numberOfChoosenCards));i++){
                 for(let j=0;j<(shownCards/numberOfChoosenCards);j++){
-                    this.gameArray.push(`image${i+1}`)
+                    this.gameArray.push(`image${i+1}-level-${this.playingLevel}`)
                 }              
         }
         
@@ -324,7 +311,7 @@ class gameScene extends Phaser.Scene{
             if(index%4==0 && index!=0){
                 offsetY++
             }
-            box.sprite = this.add.sprite(400+((index%4)*220),350+(offsetY*200),'flipped').setScale(0)
+            box.sprite = this.add.sprite(350+((index%4)*260),250+(offsetY*220),'level'+this.playingLevel,'flipped-level-'+this.playingLevel).setScale(0)
             
             box.sprite.setInteractive()
             box.sprite.on('pointerdown',()=>{
@@ -399,7 +386,7 @@ class gameScene extends Phaser.Scene{
             
         }
         for(let i= 0;i<diamondNumber;i++){
-            let diamond = this.add.image(this.rendredMessage.x-200,this.rendredMessage.y,'diamond').setAlpha(0)
+            let diamond = this.add.image(this.rendredMessage.x-200,this.rendredMessage.y,'level1','diamond').setAlpha(0)
             
             winDiamonds.push(diamond)
             
@@ -427,7 +414,17 @@ class gameScene extends Phaser.Scene{
                     this.currentUser.diamonds++
                     this.totalDiamond.setText(this.currentUser.diamonds) 
                     if(i===winDiamonds.length-1){
-                       let {next,bigRect,smallRect} =  this.createNextLevelButton()
+
+                        const fx = winDiamonds[winDiamonds.length-1].preFX.addGlow(0xffffff,0,0,false,0,0,50);   
+                        this.tweens.add({
+                            targets: fx,
+                            outerStrength: 5,
+                            yoyo: true,
+                            
+                            ease: 'sine.inout'
+                        }).on(Phaser.Tweens.Events.TWEEN_COMPLETE,()=>{
+                            let {next,bigRect,smallRect} =  this.createNextLevelButton()
+                        
                         next.on('pointerdown',()=>{
                             bigRect.destroy()
                             smallRect.destroy()
@@ -440,6 +437,8 @@ class gameScene extends Phaser.Scene{
                             this.passToNextLevel()
                             
                         })
+ 
+                        });
                     }  
                 })
             })      
@@ -607,9 +606,8 @@ class gameScene extends Phaser.Scene{
             this.gameConf.gameStarted=false
             this.gameConf.choosenCardsSprites.length=0
             this.menuSprite.destroy()          
-            this.restartSprite.destroy()
             this.menuSprite=undefined
-            this.restartSprite=undefined
+            
             this.levelText.setText('')
            
             let tween  = this.tweens.add({
@@ -631,9 +629,8 @@ class gameScene extends Phaser.Scene{
                 })
         this.gameConf.choosenCardsSprites.length=0
            this.menuSprite.destroy()          
-           this.restartSprite.destroy()
+           
            this.menuSprite=undefined
-           this.restartSprite=undefined
            this.levelText.setText('')
            
 
@@ -767,7 +764,7 @@ class gameScene extends Phaser.Scene{
             }
         } 
         if(this.beforeButton===undefined){
-            this.beforeButton =  this.add.sprite(360,900,'menu','after').setInteractive().setScale(1.2)  
+            this.beforeButton =  this.add.sprite(360,900,'level1','before').setInteractive().setScale(1.2)  
             this.beforeButton.on('pointerdown',()=>{
             
                 if(this.menu.currentLevel>1){
@@ -781,7 +778,7 @@ class gameScene extends Phaser.Scene{
             this.beforeButton.visible=true    
         }
         if(this.afterButton===undefined){
-            this.afterButton =  this.add.sprite(1130,900,'menu','after').setInteractive().setScale(1.2)
+            this.afterButton =  this.add.sprite(1130,900,'level1','before').setInteractive().setScale(1.2)
             this.afterButton.flipX=true  
             this.afterButton.on('pointerdown',()=>{
             
@@ -839,8 +836,10 @@ class gameScene extends Phaser.Scene{
             ease: 'Linear'
         }) 
         tween.on('yoyo',()=>{
+            console.log(card.sprite.active)
            if(card.sprite.active){
-            card.sprite.setTexture(card.texture)
+            
+            card.sprite.setFrame(card.texture)
          
            }
            
@@ -861,7 +860,7 @@ class gameScene extends Phaser.Scene{
         })
         tween.on('yoyo',()=>{
             if(card.sprite.active){
-                card.sprite.setTexture('flipped')
+                card.sprite.setFrame('flipped-level-'+this.playingLevel)
             }
             
         })
