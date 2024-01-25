@@ -630,15 +630,15 @@ class gameScene extends Phaser.Scene{
         
             let winTween =this.destroyGameAnimation() 
             let exploaded = false
+            let played = false    
             winTween.on(Phaser.Tweens.Events.TWEEN_UPDATE,()=>{
-                if(winTween.progress>=0.4&&!exploaded ){
-                    this.soundWin.play()   
+                if(winTween.progress>=0.2&&!exploaded ){
                     this.vfx.setPaused(false)
-                        exploaded=true
-                    /*if(!exploaded){
-                        this.soundWin.play()
-                        exploaded=true
-                    }*/    
+                       exploaded=true
+                }
+                if(winTween.progress>=0.4&&!played ){
+                    this.soundWin.play()   
+                    played=true
                 }
                 
             })
