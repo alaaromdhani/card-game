@@ -68,7 +68,7 @@ class gameScene extends Phaser.Scene{
             numberOfChoosenCards:1,
             
             stages:{
-            unlocked:2,
+            unlocked:9,
             total:9 
             }
         },
@@ -84,7 +84,7 @@ class gameScene extends Phaser.Scene{
             shownCards:4,
             numberOfChoosenCards:2,
             stages:{
-            unlocked:0,
+            unlocked:9,
             total:9 
             }
         },
@@ -100,7 +100,7 @@ class gameScene extends Phaser.Scene{
             shownCards:8,
             numberOfChoosenCards:2,
             stages:{
-            unlocked:0,
+            unlocked:9,
             total:9 
             }
         }
