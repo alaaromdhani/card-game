@@ -1,12 +1,22 @@
 let  backgroundImage
 let body  
+let backgroundImages={}
+
+
 let bodyBackgroundColors = {
     level1:"#3F2330",
     level2:"#1d0a20",
     level3:"#19385e",
     level4:"#1c3d24"
 }
-
+const preloadImages=()=>{
+    for(let i=1;i<=4;i++){
+        let image = new Image()
+        image.src=`./gameAssets/othertheme2/level${i}-background.png`
+        backgroundImages[`level${i}`]=image
+    }
+}
+preloadImages()
 function UpdateBackground(level){
     
     if(!backgroundImage){
@@ -18,10 +28,10 @@ function UpdateBackground(level){
     
     body.style.backgroundColor=bodyBackgroundColors['level'+level]
     backgroundImage.style.opacity=`0`    
-    backgroundImage.setAttribute('src',`./gameAssets/othertheme2/level${level}-background.png`)
-  
+   
     setTimeout(()=>{
-      
+        backgroundImage.setAttribute('src',backgroundImages[`level${level}`].src)
+  
         backgroundImage.style.opacity=`1`    
         
     },1000)
