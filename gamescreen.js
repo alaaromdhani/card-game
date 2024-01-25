@@ -34,7 +34,7 @@ function UpdateBackground(level){
   
         backgroundImage.style.opacity=`1`    
         
-    },1000)
+    },200)
 }
 class gameScene extends Phaser.Scene{
     constructor(){
@@ -299,7 +299,10 @@ class gameScene extends Phaser.Scene{
 
                                         
     }
-    navigateAnimation(){
+    navigateAnimation(duration){
+        if(!duration){
+            duration=1000
+        }
         const graphics  = this.add.graphics()
         graphics.fillStyle(0x171515,1) ;
         
@@ -308,7 +311,7 @@ class gameScene extends Phaser.Scene{
         let tween = this.tweens.add({
            targets: rect,
            props:{
-               alpha:{ value:1, duration: 1000, yoyo: true },
+               alpha:{ value:1, duration, yoyo: true },
                 
             },
            yoyo: true,
@@ -406,6 +409,16 @@ class gameScene extends Phaser.Scene{
        }
        else{
         this.menuSprite.setVisible(true)
+       }
+       if(!this.restartButton){
+            this.restartButton = this.add.sprite(1370,250,'level1','restart').setInteractive()
+            this.restartButton.on('pointerdown',()=>{
+                this.stopGameScreen()
+                this.restartLevel()
+            })
+       }
+       else{
+            this.restartButton.setVisible(true)
        }
        
         let {shownCards,numberOfChoosenCards} = this.levels['level'+this.playingLevel]
@@ -601,6 +614,8 @@ class gameScene extends Phaser.Scene{
         }
     }
     winEffect(){
+        this.vfx=this.add.video(750,500,'vfx').setPaused(true)
+       
         if(this.levels[`level${this.playingLevel}`].stages.unlocked===this.playingStage){
             if(this.levels[`level${this.playingLevel}`].stages.unlocked===this.levels[`level${this.playingLevel}`].stages.total){
                if(this.levels[`level${this.playingLevel+1}`] && this.levels[`level${this.playingLevel+1}`].stages.unlocked===0){
@@ -613,7 +628,6 @@ class gameScene extends Phaser.Scene{
 
         }
         
-        this.vfx=this.add.video(750,500,'vfx').setPaused(true)
             let winTween =this.destroyGameAnimation() 
             let exploaded = false
             winTween.on(Phaser.Tweens.Events.TWEEN_UPDATE,()=>{
@@ -710,8 +724,8 @@ class gameScene extends Phaser.Scene{
         })
         tween.on(Phaser.Tweens.Events.TWEEN_COMPLETE,()=>{
 
-            let restartButton = this.add.sprite(this.rendredMessage.x+100,this.rendredMessage.y+100,'level1','restart').setAlpha(0).setInteractive()
-            let menuButton = this.add.sprite(this.rendredMessage.x-100,this.rendredMessage.y+100,'level1','menu').setAlpha(0).setInteractive()
+            let restartButton = this.add.sprite(this.rendredMessage.x,this.rendredMessage.y+150,'level1','restart').setAlpha(0).setInteractive()
+            let menuButton = this.add.sprite(60,60,'level1','menu').setAlpha(0).setInteractive()
             
             let tween= this.tweens.add({
                 targets:[restartButton,menuButton],
@@ -755,7 +769,7 @@ class gameScene extends Phaser.Scene{
             this.menuSprite.setVisible(false)
             //   this.menuSprite.destroy()          
            // this.menuSprite=undefined
-            
+            this.restartButton.setVisible(false)
             this.levelText.setText('')
            
             let tween  = this.tweens.add({
@@ -777,6 +791,7 @@ class gameScene extends Phaser.Scene{
                 })
         this.gameConf.choosenCardsSprites.length=0
         this.menuSprite.setVisible(false)   
+        this.restartButton.setVisible(false)
         //this.menuSprite.destroy()          
            
          //  this.menuSprite=undefined
@@ -875,18 +890,22 @@ class gameScene extends Phaser.Scene{
     
     }
     setNext(){
-        
+    
         this.menu.currentLevel++
         this.updateScreenOnLevelChange(this.menu.currentLevel,true)
         this.movingMenuCircle.setX(this.movingMenuCircle.x+this.offsetMenuCircle)
+        
         Object.keys(this.menu.stageBoxes).forEach(level=>{
+            
             this.menu.stageBoxes[level].forEach(sprite=>{
-                 sprite.box.x-=1500
-                 if(sprite.text){
-                    sprite.text.x-=1500
-                 }
-            }) 
+             sprite.box.x-=1500
+             if(sprite.text){
+                sprite.text.x-=1500
+             }
+        }) 
         })
+        
+        
     
     }
     setPrevious(){
