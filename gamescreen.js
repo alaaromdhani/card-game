@@ -1,13 +1,48 @@
+let  backgroundImage
+let body  
+let bodyBackgroundColors = {
+    level1:"#3F2330",
+    level2:"#1d0a20",
+    level3:"#19385e",
+    level4:"#1c3d24"
+}
+
+function UpdateBackground(level){
+    
+    if(!backgroundImage){
+        backgroundImage = document.querySelector('#background-image')
+    }
+    if(!body){
+        body = document.querySelector('body')
+    }
+    
+    body.style.backgroundColor=bodyBackgroundColors['level'+level]
+    backgroundImage.style.opacity=`0`    
+    backgroundImage.setAttribute('src',`./gameAssets/othertheme2/level${level}-background.png`)
+  
+    setTimeout(()=>{
+      
+        backgroundImage.style.opacity=`1`    
+        
+    },1000)
+}
 class gameScene extends Phaser.Scene{
     constructor(){
        super( ) 
+       this.mainRectangles=[]
+       this.backgroundRectangles=[]
        this.currentUser = {
         name:'علاء الرمضاني',
         diamonds:0
        }
        this.levels={
         level1:{
-            
+            menuContainer:{
+                backgroundRectangle:[0x05050E,0x05050E,0x331919,0x331919],
+                mainRectangle:{color:0x3F2330,opacity:1}
+
+
+            },
 
             maxDiamond:1,
             minDiamond:5,
@@ -15,22 +50,35 @@ class gameScene extends Phaser.Scene{
             numberOfChoosenCards:1,
             stages:{
                 
-            unlocked:1,
+            unlocked:9,
             total:9 
             }
         },
         level2:{
+            menuContainer:{
+                backgroundRectangle:[0x1d0a20,0x1d0a20,0x1d0a20,0x1d0a20],
+             
+                mainRectangle:{color:0x1d0a20,opacity:0.82}
+
+
+            },
             maxDiamond:2,
             minDiamond:2,
             shownCards:8,
             numberOfChoosenCards:1,
             
             stages:{
-            unlocked:0,
+            unlocked:2,
             total:9 
             }
         },
         level3:{
+            menuContainer:{
+                backgroundRectangle:[0x0c4168,0x0c4168,0x0332a2,0x0332a2],
+                mainRectangle:{color:0x19385e,opacity:1}
+
+
+            },
             maxDiamond:3,
             minDiamond:3,
             shownCards:4,
@@ -41,6 +89,12 @@ class gameScene extends Phaser.Scene{
             }
         },
         level4:{
+            menuContainer:{
+                backgroundRectangle:[0x11300b,0x11300b,0x253a1d,0x253a1d],
+                mainRectangle:{color:0x1c3d24,opacity:1}
+
+
+            },
             maxDiamond:4,
             minDiamond:4,
             shownCards:8,
@@ -65,9 +119,10 @@ class gameScene extends Phaser.Scene{
     }
     preload(){
         this.load.atlas('menu', './assets/othertheme/Asset 61.png', 'assets/menu.json')
-        this.load.image('diamond', './assets/othertheme/diamond.png')
-        this.load.image('flipped', './assets/othertheme/flipped.png')
-        this.load.atlas('level1', './gameAssets/othertheme2/lvl 1 (2).png', './gameAssets/othertheme2/images.json')
+        this.load.atlas('level1', './gameAssets/othertheme2/level1-images.png', './gameAssets/othertheme2/images.json')
+        this.load.atlas('level2', './gameAssets/othertheme2/level2-images.png', './gameAssets/othertheme2/images.json')
+        this.load.atlas('level3', './gameAssets/othertheme2/level3-images.png', './gameAssets/othertheme2/images.json')
+        this.load.atlas('level4', './gameAssets/othertheme2/level4-images.png', './gameAssets/othertheme2/images.json')
         this.load.audio('backgroundMusic','./assets/sounds/background.webm')
         this.load.audioSprite('sfx', 'assets/sounds/soundSheet.json');  
         this.load.audio('correct','./assets/sounds/correcta.webm')
@@ -76,14 +131,14 @@ class gameScene extends Phaser.Scene{
         this.load.audio('win','./assets/sounds/win.webm')
         this.load.audio('wrong','./assets/sounds/worng.webm')
         this.load.audio('diamondEffect','./assets/sounds/6YMoS3pB03m_44100_48_0.mp3')
-        
-        this.load.atlas('flares', 'assets/flares.png', 'assets/flares.json');
+        this.load.video('vfx','./gameAssets/othertheme2/vfx gale flip card win and lose (1).webm',true)
         this.load.spritesheet('boom', 'assets/othertheme/explosion.png', { frameWidth: 64, frameHeight: 64, endFrame: 23 });
     
  
         
     }
     initializeSound(){
+        
         this.soundgameover = this.sound.add('gameover')
         this.soundCorrect = this.sound.add('correct')
         this.soundWin = this.sound.add('win')
@@ -97,35 +152,64 @@ class gameScene extends Phaser.Scene{
         this.backgroundMusic.play()*/
         this.btnClickMusic=this.sound.addAudioSprite('sfx')
     }
-    initializeBackground(){
-       
-      const graphics = this.add.graphics()
-      graphics.fillGradientStyle(0x05050E,0x05050E,0x331919,0x331919,1)
-      let rectangle = graphics.fillRect(0,0,1500,1152)
-      graphics.fillStyle(0xffffff,0.4)
-      let menuRectangle = graphics.fillRoundedRect(0,-20,1500,152)  
-      graphics.fillStyle(0x3F2330,1)
+    createNormalRectangle(x,y,width,height,{color,opacity}){
         
-      let menuRectangle2 = graphics.fillRoundedRect(0,-20,1500,150)  
- 
+         return this.add.graphics().fillStyle(color,opacity).fillRoundedRect(x,y,width,height)
+    }
+    createGradiantRectangle(x,y,width,height,colors){
+        return this.add.graphics().fillGradientStyle(...colors,1).fillRect(x,y,width,height)
+    }
+    setGlobalBackground(){
+         Object.keys(this.levels).map(l=>{
+            let level = parseInt(l.replace('level',''))
+             if(level===this.menu.currentLevel){
+                 this.backgroundRectangles.push(this.createGradiantRectangle(0,0,1500,1052,this.levels[l].menuContainer.backgroundRectangle))
+             }
+             else{
+                this.backgroundRectangles.push(this.createGradiantRectangle(0,0,1500,1052,this.levels[l].menuContainer.backgroundRectangle).setVisible(false))
+             }
+         })
+         
+         
+    }
+    initializeBackground(){
+    
+      //  this.backgroundRectangles.push(this.createGradiantRectangle(0,-20,1500,150,this.levels[l].menuContainer.backgroundRectangle))
+     //   this.createGradiantRectangle(0,0,1500,1052,this.levels['level1'].menuContainer.backgroundRectangle)
       
-      this.nameText = this.add.text(1390, 30, this.currentUser.name , {
-        fontSize: '40px',
-        fontFamily: 'Asmaa',
-        color: '#ffffff',
-      }).setOrigin(0.5) 
-      this.diamondSprite = this.add.sprite(1450,80,'level1','diamond').setScale(0.7)
-      this.totalDiamond = this.add.text(1370, 80, this.currentUser.diamonds , {
-        fontSize: '40px',
-        fontFamily: 'Asmaa',
-        color: '#ffffff',
-      }).setOrigin(0.5) 
-      
-      this.levelText = this.add.text(730, 50, this.menu.currentLevel+' المستوى' , {
-        fontSize: '50px',
-        fontFamily: 'Asmaa',
-        color: '#ffffff',
-      }).setOrigin(0.5) 
+        const graphics = this.add.graphics()
+         
+        graphics.fillStyle(0xffffff,0.4)
+        graphics.fillRoundedRect(0,-20,1500,152)  
+          Object.keys(this.levels).map(l=>{
+             let level = parseInt(l.replace('level',''))
+              if(level===this.menu.currentLevel){
+                  this.mainRectangles.push(this.createNormalRectangle(0,-20,1500,150,this.levels[l].menuContainer.mainRectangle))
+              }
+              else{
+                  this.mainRectangles.push(this.createNormalRectangle(0,-20,1500,150,this.levels[l].menuContainer.mainRectangle).setVisible(false))
+              }
+          })      
+        this.nameText = this.add.text(1390, 30, this.currentUser.name , {
+          fontSize: '40px',
+          fontFamily: 'Asmaa',
+          color: '#ffffff',
+        }).setOrigin(0.5) 
+        this.diamondSprite = this.add.sprite(1450,80,'level1','diamond').setScale(0.7)
+        this.totalDiamond = this.add.text(1370, 80, this.currentUser.diamonds , {
+          fontSize: '40px',
+          fontFamily: 'Asmaa',
+          color: '#ffffff',
+        }).setOrigin(0.5) 
+        
+        this.levelText = this.add.text(730, 50, this.menu.currentLevel+' المستوى' , {
+          fontSize: '50px',
+          fontFamily: 'Asmaa',
+          color: '#ffffff',
+        }).setOrigin(0.5)
+
+     
+       
       this.anims.create({
         key: 'explode',
         frames: 'boom',
@@ -172,6 +256,22 @@ class gameScene extends Phaser.Scene{
         
 
     }
+    updateScreenOnLevelChange(prev,next){
+      //  console.log(prev,next)
+      if(next){
+        this.mainRectangles[prev-2].setVisible(false)
+        this.backgroundRectangles[prev-2].setVisible(false)
+      }
+      else{
+        this.mainRectangles[prev].setVisible(false)
+        this.backgroundRectangles[prev].setVisible(false)
+     
+    } 
+      this.mainRectangles[prev-1].setVisible(true) 
+      this.backgroundRectangles[prev-1].setVisible(true) 
+      UpdateBackground(prev)
+   
+    }
     createLevelBox(x,y,isLocked){
         let box
         if(isLocked){
@@ -193,7 +293,7 @@ class gameScene extends Phaser.Scene{
         const graphics  = this.add.graphics()
         graphics.fillStyle(0x171515,1) ;
         
-        const rect = graphics.fillRoundedRect(118,158,1264,905).setAlpha(0)
+        const rect = graphics.fillRect(0,130,1500,1052).setAlpha(0)
            
         let tween = this.tweens.add({
            targets: rect,
@@ -284,6 +384,7 @@ class gameScene extends Phaser.Scene{
        })       
     }
     setGamePart2(){
+       if(!this.menuSprite){
         this.menuSprite = this.add.sprite(60,60,'level1','menu').setInteractive()
         
       
@@ -292,6 +393,10 @@ class gameScene extends Phaser.Scene{
             this.backToMenu()
                
         })
+       }
+       else{
+        this.menuSprite.setVisible(true)
+       }
        
         let {shownCards,numberOfChoosenCards} = this.levels['level'+this.playingLevel]
         let tweensNumber = 0
@@ -317,8 +422,9 @@ class gameScene extends Phaser.Scene{
             box.sprite.on('pointerdown',()=>{
                if(this.gameConf.gameStarted && box.clickable){
                     box.clickable=false  
+                    this.manageCard(box,index)
                     this.flipCard(box).on(Phaser.Tweens.Events.TWEEN_COMPLETE,()=>{
-                        this.manageCard(box,index)
+                        
                     })
                }
             })
@@ -424,11 +530,30 @@ class gameScene extends Phaser.Scene{
                             ease: 'sine.inout'
                         }).on(Phaser.Tweens.Events.TWEEN_COMPLETE,()=>{
                             let {next,bigRect,smallRect} =  this.createNextLevelButton()
-                        
+                            const  menu = this.add.sprite(60,60,'level1','menu').setInteractive()
+        
+      
+                            menu.on('pointerdown',()=>{
+                                bigRect.destroy()
+                                smallRect.destroy()
+                                next.destroy()
+                                winDiamonds.forEach(wd=>{
+                                    wd.destroy()
+                                    this.rendredMessage.destroy()
+                                })
+                                menu.destroy()
+                                this.navigateAnimation().on(Phaser.Tweens.Events.TWEEN_COMPLETE,()=>{
+                                    this.menu.currentLevel=this.playingLevel
+                                    this.startMenu()
+                                })
+                                   
+                            })
                         next.on('pointerdown',()=>{
+                            menu.destroy()
                             bigRect.destroy()
                             smallRect.destroy()
                             next.destroy()
+                            console.log(this.playingStage)
                             winDiamonds.forEach(wd=>{
                                 wd.destroy()
                                 this.rendredMessage.destroy()
@@ -445,6 +570,7 @@ class gameScene extends Phaser.Scene{
          })
     }
     passToNextLevel(){
+        this.menu.currentLevel=this.playingLevel
         if(this.playingStage<this.levels['level'+this.playingLevel].stages.total){
             this.playingStage++
           
@@ -452,10 +578,13 @@ class gameScene extends Phaser.Scene{
         }
         else{
             if(this.playingLevel>=this.menu.numberOfLevels){
+
                 this.backToMenu()
             }
             else{
                 this.playingLevel++;
+                
+                this.updateScreenOnLevelChange(this.playingLevel,true)
                 this.playingStage=1
                 this.setGame()
             }
@@ -474,32 +603,39 @@ class gameScene extends Phaser.Scene{
 
         }
         
-            this.WinEmitter = this.add.particles(730, 525, 'flares', {
-                frame: [ 'red', 'yellow', 'green' ],
-                lifespan: 1000,
-                speed: { min: 150, max: 250 },
-                scale: { start: 0.8, end: 0 },
-                gravityY: 150,
-                blendMode: 'ADD',
-                emitting: false
-            });
+        this.vfx=this.add.video(750,500,'vfx').setPaused(true)
             let winTween =this.destroyGameAnimation() 
             let exploaded = false
             winTween.on(Phaser.Tweens.Events.TWEEN_UPDATE,()=>{
-                if(winTween.progress>=0.4 ){
-                    this.WinEmitter.explode(16)
-                    if(!exploaded){
+                if(winTween.progress>=0.4&&!exploaded ){
+                    this.soundWin.play()   
+                    this.vfx.setPaused(false)
+                        exploaded=true
+                    /*if(!exploaded){
                         this.soundWin.play()
                         exploaded=true
-                    }    
+                    }*/    
                 }
                 
             })
             winTween.on(Phaser.Tweens.Events.TWEEN_COMPLETE,()=>{
+                
                 this.gameArray.forEach(c=>{
                     c.sprite.destroy()
                 })
-                this.winTextEffect()
+                this.tweens.add({
+                   targets:this.vfx,
+                   props:
+                   {
+                    alpha:{value:0,duration:200},
+                    
+                   } 
+                }).on(Phaser.Tweens.Events.TWEEN_COMPLETE,()=>{
+                    this.vfx.destroy()
+                    
+                    this.winTextEffect()
+               
+                })
                 
             })
            
@@ -527,12 +663,12 @@ class gameScene extends Phaser.Scene{
         }
 
         else{
-
+           this.gameConf.gameStarted=false
             this.soundWrong.play() 
             this.soundgameover.play()
             this.add.sprite(card.sprite.x, card.sprite.y).setScale(4).play('explode');
             card.sprite.destroy()
-            this.gameConf.gameStarted=false
+            
             this.destroyGameAnimation().on(Phaser.Tweens.Events.TWEEN_COMPLETE,()=>{
                 this.gameArray.forEach(c=>{
                     c.sprite.destroy()
@@ -564,8 +700,8 @@ class gameScene extends Phaser.Scene{
         })
         tween.on(Phaser.Tweens.Events.TWEEN_COMPLETE,()=>{
 
-                let restartButton = this.add.sprite(this.rendredMessage.x+40,this.rendredMessage.y+100,'menu','restart').setAlpha(0).setInteractive()
-            let menuButton = this.add.sprite(this.rendredMessage.x-40,this.rendredMessage.y+100,'menu','menu').setAlpha(0).setInteractive()
+            let restartButton = this.add.sprite(this.rendredMessage.x+100,this.rendredMessage.y+100,'level1','restart').setAlpha(0).setInteractive()
+            let menuButton = this.add.sprite(this.rendredMessage.x-100,this.rendredMessage.y+100,'level1','menu').setAlpha(0).setInteractive()
             
             let tween= this.tweens.add({
                 targets:[restartButton,menuButton],
@@ -588,6 +724,7 @@ class gameScene extends Phaser.Scene{
                 restartButton.destroy()
                 menuButton.destroy()
                 this.rendredMessage.destroy()
+                this.menu.currentLevel=this.playingLevel
                 this.startMenu()
                 
             })
@@ -605,8 +742,9 @@ class gameScene extends Phaser.Scene{
             })
             this.gameConf.gameStarted=false
             this.gameConf.choosenCardsSprites.length=0
-            this.menuSprite.destroy()          
-            this.menuSprite=undefined
+            this.menuSprite.setVisible(false)
+            //   this.menuSprite.destroy()          
+           // this.menuSprite=undefined
             
             this.levelText.setText('')
            
@@ -628,9 +766,10 @@ class gameScene extends Phaser.Scene{
                 s.destroy()
                 })
         this.gameConf.choosenCardsSprites.length=0
-           this.menuSprite.destroy()          
+        this.menuSprite.setVisible(false)   
+        //this.menuSprite.destroy()          
            
-           this.menuSprite=undefined
+         //  this.menuSprite=undefined
            this.levelText.setText('')
            
 
@@ -643,6 +782,7 @@ class gameScene extends Phaser.Scene{
         tween.on(Phaser.Tweens.Events.TWEEN_UPDATE,()=>{
             if(tween.progress>0.6 && !back){
                 back=true
+                this.menu.currentLevel = this.playingLevel
                 this.startMenu() 
             }    
         })
@@ -725,8 +865,9 @@ class gameScene extends Phaser.Scene{
     
     }
     setNext(){
-        this.menu.currentLevel++
         
+        this.menu.currentLevel++
+        this.updateScreenOnLevelChange(this.menu.currentLevel,true)
         this.movingMenuCircle.setX(this.movingMenuCircle.x+this.offsetMenuCircle)
         Object.keys(this.menu.stageBoxes).forEach(level=>{
             this.menu.stageBoxes[level].forEach(sprite=>{
@@ -740,7 +881,7 @@ class gameScene extends Phaser.Scene{
     }
     setPrevious(){
         this.menu.currentLevel--
-
+        this.updateScreenOnLevelChange(this.menu.currentLevel,false)
         this.movingMenuCircle.setX(this.movingMenuCircle.x-this.offsetMenuCircle)
     
         Object.keys(this.menu.stageBoxes).forEach(level=>{
@@ -811,16 +952,20 @@ class gameScene extends Phaser.Scene{
         }
         
         
+       
       
   
         
     }
     create(){
        // document.querySelector('body').requestFullscreen()
-            this.initializeBackground()
-            this.initializeSound()
-            
-            this.startMenu()
+        this.setGlobalBackground()
+        this.initializeBackground()
+        this.initializeSound()
+        
+        this.startMenu()
+        
+          
             //this.setGame()
             
         
@@ -836,7 +981,6 @@ class gameScene extends Phaser.Scene{
             ease: 'Linear'
         }) 
         tween.on('yoyo',()=>{
-            console.log(card.sprite.active)
            if(card.sprite.active){
             
             card.sprite.setFrame(card.texture)

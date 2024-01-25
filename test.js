@@ -56,40 +56,22 @@ class gameScene extends Phaser.Scene{
     }    
     }
     preload(){
-        this.load.atlas('level1', './gameAssets/othertheme2/lvl 1 (2).png', './gameAssets/othertheme2/images.json')
+        this.load.atlas('level1', './gameAssets/othertheme2/level4-images.png', './gameAssets/othertheme2/images.json')
        
-        
+        //proxy_headers_hash_max_size: 512
     }
     initializeBackground(){
         const graphics = this.add.graphics()
-        graphics.fillGradientStyle(0x05050E,0x05050E,0x331919,0x331919,1)
+        graphics.fillGradientStyle(0x0c4168,0x0c4168,0x0c4168,0x0c4168,1)
         let rectangle = graphics.fillRect(0,0,1500,1052)
         graphics.fillStyle(0xffffff,0.4)
         let menuRectangle = graphics.fillRoundedRect(0,-20,1500,152)  
-        graphics.fillStyle(0x3F2330,1)
+        graphics.fillStyle(0x19385e,1)
           
         let menuRectangle2 = graphics.fillRoundedRect(0,-20,1500,150)  
         graphics.fillStyle(0xffffff,0.4)
-        let test = this.add.sprite(400,300,'level1','image8-level-1')
-        //this.diamondSprite = this.add.sprite(1460,80,'diamond').setScale(0.7)
-        /*this.totalDiamond = this.add.text(1225, 110, this.currentUser.diamonds , {
-          fontSize: '40px',
-          fontFamily: 'Asmaa',
-          color: '#ffffff',
-        }).setOrigin(0.5) */
-        
-        /*this.levelText = this.add.text(730, 200, this.menu.currentLevel+' المستوى' , {
-          fontSize: '50px',
-          fontFamily: 'Asmaa',
-          color: '#ffffff',
-        }).setOrigin(0.5) 
-        this.anims.create({
-          key: 'explode',
-          frames: 'boom',
-          frameRate: 40,
-          showOnStart: true,
-          hideOnComplete: true
-       }); */
+        let test = this.add.sprite(400,300,'level1','image1-level-4')
+     
     }
     resizeFunction(){
             

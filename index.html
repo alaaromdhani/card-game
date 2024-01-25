@@ -11,28 +11,53 @@
     src: url("./assets/fonts/Asmaa\ Font.otf") format("opentype");
     }
 
-    body{
-        background-image:url('./assets/othertheme/bg.jpg');
-        background-repeat:no-repeat;
-        background-size: cover;
-        
+    .background{
+        overflow: hidden;
+        position: relative;
        
+    }
+    .background-image{
+        opacity: 1;
+        position: absolute;
+        transition: opacity 1s;
+        width: 100vw;
+        height: 100vh;
+
     }
     canvas{
         box-shadow: 0px 3px 14px 8px rgba(0,0,0,0.75);
         box-shadow: 1px 1px 15px 10px rgba(234, 234, 234, 0.2);
+        position: absolute;
     }
 </style>
-<h3 id="title" style="font-family: Asmaa;color: #0081C9;position: absolute;" >مدار</h3>
+<h3 id="full-screen" style="font-family: Asmaa;color: #0081C9;position: absolute;" >مدار</h3>
+  
 <script src="//cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.js"></script>
 <script src="//cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.min.js"></script>
 <script src="gamescreen.js"></script>
-<script>
-    document.querySelector('#title').addEventListener('click',(e)=>{
-        document.querySelector('body').requestFullscreen().then(()=>{console.log('good')}).catch(e=>{ alert('full screnn not supported because of',e.message)})
-    })
-</script>
-<body>
-    
+
+<body class="background" style="background-color: #3F2330;">
+  
+    <img id="background-image" src="./gameAssets/othertheme2/level1-background.png" class="background-image" alt="">
+    <div id="full-screen-button" style="top: 5px; left: 5px; position: absolute;display: flex;justify-content: center;">
+        <img style="width: 50px;"  src="./gameAssets/othertheme2/full-screen-button.png" alt="">
+    </div>
+    <script>
+        let body2 = document.querySelector('body')
+        let fullScreenButton = document.querySelector('#full-screen-button')
+        let fullScreenImage = fullScreenButton.querySelector('img')
+        document.querySelector('#full-screen-button').addEventListener('click',(e)=>{
+            const isFullScreen = fullScreenImage.getAttribute('src').includes('down')
+            if(!isFullScreen){
+                body2.requestFullscreen().then(()=>{console.log('good')}).catch(e=>{ alert('full screnn not supported because of',e.message)})
+                fullScreenImage.setAttribute('src','./gameAssets/othertheme2/down-screen.png')
+            }
+            else{
+                document.exitFullscreen()
+                fullScreenImage.setAttribute('src','./gameAssets/othertheme2/full-screen-button.png')
+        
+          }           
+        })
+    </script>
 </body>
 </html>
