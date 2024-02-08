@@ -1,5 +1,5 @@
-let  backgroundImage
-let body  
+let  backgroundImage=document.querySelector('#background-image')
+let body  =document.querySelector('body')
 let backgroundImages={}
 
 
@@ -18,14 +18,7 @@ const preloadImages=()=>{
 }
 preloadImages()
 function UpdateBackground(level){
-    
-    if(!backgroundImage){
-        backgroundImage = document.querySelector('#background-image')
-    }
-    if(!body){
-        body = document.querySelector('body')
-    }
-    
+   
     body.style.backgroundColor=bodyBackgroundColors['level'+level]
     backgroundImage.style.opacity=`0`    
    
@@ -42,7 +35,7 @@ class gameScene extends Phaser.Scene{
        this.mainRectangles=[]
        this.backgroundRectangles=[]
        this.currentUser = {
-        name:'علاء الرمضاني',
+        name:'',
         diamonds:0
        }
        this.levels={
